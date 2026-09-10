@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المسبحة الإلكترونية (صَدَقَةٌ جَارِيَةٌ لِجَمِيعِ المُسْلِمِينَ أَحْيَاءً وَأَمْوَاتًا)</title>
+    <style>
+        :root {
+            --sky-blue: #DBEAFE;
+            --white: #FFFFFF;
+            --black: #000000;
+            --dark-gray: #1E293B;
+            --red-reset: #EF4444;
+            --blue-badge: #EFF6FF;
+            --blue-text: #2563EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--sky-blue);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 900px;
+            position: relative;
+            background-color: var(--sky-blue);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* 1. شاشة الشعار (تظهر 3 ثوانٍ) */
+        #layoutAppLogo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--sky-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 60;
+            cursor: pointer;
+        }
+
+        .app-logo-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 40px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            object-fit: cover;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 2. شاشة الإهداء الافتتاحية (تظهر 10 ثوانٍ) */
+        #layoutSplash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--sky-blue);
+            z-index: 50;
+            cursor: pointer;
+        }
+
+        .splash-card {
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            padding: 28px 22px;
+            margin: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        .splash-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--black);
+            margin-bottom: 16px;
+        }
+
+        .splash-body {
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 1.8;
+            color: var(--black);
+            white-space: pre-line;
+        }
+
+        /* 3. الشاشة الرئيسية لقائمة الأذكار */
+        #layoutHome {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+        }
+
+        .main-header {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: var(--black);
+            margin-top: 15px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+            scrollbar-width: none;
+        }
+        .scroll-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dhikr-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .dhikr-card:active {
+            transform: scale(0.98);
+        }
+
+        .dhikr-card-text {
+            font-size: 17px;
+            font-weight: bold;
+            color: var(--black);
+            flex: 1;
+            padding-left: 10px;
+        }
+
+        .badge-counter {
+            background: var(--blue-badge);
+            color: var(--blue-text);
+            font-weight: bold;
+            font-size: 15px;
+            padding: 6px 14px;
+            border-radius: 25px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* 4. شاشة التسبيح الفردية والعداد */
+        #layoutTasbeeh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--sky-blue);
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            z-index: 40;
+        }
+
+        .top-bar {
+            padding: 16px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-ui {
+            height: 45px;
+            padding: 0 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            background: var(--white);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border: none;
+            outline: none;
+        }
+
+        .btn-back { color: var(--black); }
+        .btn-reset { color: var(--red-reset); }
+
+        .tasbeeh-center {
+            text-align: center;
+            padding: 20px;
+            margin: auto 0;
+        }
+
+        .counter-number {
+            font-size: 72px;
+            font-weight: bold;
+            color: var(--black);
+            margin-bottom: 25px;
+        }
+
+        .active-dhikr-name {
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        .tap-hint {
+            font-size: 14px;
+            color: #64748B;
+            margin-top: 35px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+
+    <!-- 1. شاشة الشعار (3 ثوانٍ) -->
+    <div id="layoutAppLogo" onclick="skipLogoScreen()">
+        <img src="logo.png" alt="شعار تطبيق التسبيح" class="app-logo-img">
+    </div>
+
+    <!-- 2. شاشة الإهداء الافتتاحية (10 ثوانٍ) -->
+    <div id="layoutSplash" onclick="skipSplash()">
+        <div class="splash-card">
+            <div class="splash-title">💚بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم💚ِ</div>
+            <div class="splash-body">💚صَدَقَةٌ جَارِيَةٌ عَلَى رُوحِ وَالِدِي💚
+🤍الحَاجّ حَسَن يُوسُف أَحْمَد🤍
+💚وَأَخِي💚
+🤍الحَاجّ إِبْرَاهِيم حَسَن يُوسُف🤍
+وَلِعَائِلَتِي وَأَهْلِ بَيْتِي وَأَصْدِقَائِي، وَلِجَمِيعِ المُسْلِمِينَ
+أَحْيَاءً وَأَمْوَاتًا الرَّجَاءُ مِنْكُمْ قِرَاءَةُ الْفَاتِحَةِ لَهُمْ وَلِجَمِيعِ الْمُسْلِمِينَ فَضْلًا وَلَيْسَ أَمْرًا ، جَزَاكُمُ اللَّهُ كُلَّ خَيْرٍ
+قَامَ بِتَصْمِيمِ وَإِنْشَاءِ التَّطْبِيقِ الْمُهَنْدِسُ يُوسُف حَسَن يُوسُف، غَفَرَ اللَّهُ لَهُ وَلِوَالِدَيْهِ وَأَهْلِ بَيْتِهِ وَذُرِّيَّتِهِ وَسَائِرِ أَقْرِبَائِهِ وَأَصْدِقَائِه اللَّهُمَّ آمِينَ💚ِ</div>
+        </div>
+    </div>
+
+    <!-- 3. الشاشة الرئيسية -->
+    <div id="layoutHome">
+        <div class="main-header">المسبحة الإلكترونية (صَدَقَةٌ جَارِيَةٌ لِجَمِيعِ المُسْلِمِينَ أَحْيَاءً وَأَمْوَاتًا)</div>
+        <div class="scroll-area" id="containerDhikrList"></div>
+    </div>
+
+    <!-- 4. شاشة التسبيح والعداد -->
+    <div id="layoutTasbeeh" onclick="countTap()">
+        <div class="top-bar">
+            <button class="btn-ui btn-back" onclick="goHome(event)">← رجوع</button>
+            <button class="btn-ui btn-reset" onclick="resetCounter(event)">تصفير (0)</button>
+        </div>
+        <div class="tasbeeh-center">
+            <div class="counter-number" id="tvCounter">0</div>
+            <div class="active-dhikr-name" id="tvActiveDhikr">سُبْحَانَ اللَّهِ</div>
+            <div class="tap-hint">اضغط في أي مكان على الشاشة للتسبيح</div>
+        </div>
+        <div></div>
+    </div>
+
+</div>
+
+<script>
+    const dhikrList = [
+        { id: "dhikr_subhan_full", text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ" },
+        { id: "dhikr_allah", text: "اللَّهُ" },
+        { id: "dhikr_salawat", text: "اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ وَآلِهِ" },
+        { id: "dhikr_hawqala", text: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ" },
+        { id: "dhikr_tahlil", text: "لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ" },
+        { id: "dhikr_tahmid", text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ" },
+        { id: "dhikr_takbir", text: "اللَّهُ أَكْبَرُ كَبِيرًا" },
+        { id: "dhikr_yunus", text: "لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ" },
+        { id: "dhikr_morning", text: "فِي الصَّبَاحِ: أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ" },
+        { id: "dhikr_evening", text: "فِي الْمَسَاءِ: أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ" },
+        { id: "dhikr_sayyid_istighfar", text: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ ، خَلَقْتَنِي وَأَنَا عَبْدُكَ" },
+        { id: "dhikr_bismillahi_ladhi", text: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ" },
+        { id: "dhikr_prayer_istighfar", text: "أَسْتَغْفِرُ اللَّهَ ، اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ" },
+        { id: "dhikr_rukoo", text: "سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ" },
+        { id: "dhikr_sujood", text: "سُبْحَانَ رَبِّيَ الْأَعْلَىٰ وَبِحَمْدِهِ" },
+        { id: "dhikr_ayat_kursi", text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ" },
+        { id: "dhikr_food_before", text: "قَبْلَ الأَكْلِ: بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" },
+        { id: "dhikr_food_after", text: "بَعْدَ الأَكْلِ: الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَٰذَا وَرَزَقَنِيهِ" },
+        { id: "dhikr_rain", text: "عِنْدَ نُزُولِ المَطَرِ: اللَّهُمَّ صَيِّبًا نَافِعًا" },
+        { id: "dhikr_earthquake", text: "عِنْدَ الزَّلَازِلِ: اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا" },
+        { id: "dhikr_eclipse", text: "عِنْدَ الكُسُوفِ وَالخُسُوفِ: سُبْحَانَ اللَّهِ ، وَالْحَمْدُ لِلَّهِ ، وَلَا إِلَٰهَ إِلَّا اللَّهُ ، وَاللَّهُ أَكْبَرُ" },
+        { id: "dhikr_istighfar_short", text: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ" },
+        { id: "dhikr_kaffarat_majlis", text: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ" }
+    ];
+
+    let currentDhikr = null;
+    let logoTimer = null;
+    let splashTimer = null;
+
+    // توقيت الانتقال: 3 ثوانٍ لشاشة الشعار
+    logoTimer = setTimeout(showSplash, 3000);
+
+    function skipLogoScreen() {
+        clearTimeout(logoTimer);
+        showSplash();
+    }
+
+    function showSplash() {
+        document.getElementById("layoutAppLogo").style.display = "none";
+        document.getElementById("layoutSplash").style.display = "flex";
+        // توقيت شاشة الإهداء: 10 ثوانٍ
+        splashTimer = setTimeout(showHome, 10000);
+    }
+
+    function skipSplash() {
+        clearTimeout(splashTimer);
+        showHome();
+    }
+
+    function showHome() {
+        document.getElementById("layoutAppLogo").style.display = "none";
+        document.getElementById("layoutSplash").style.display = "none";
+        document.getElementById("layoutTasbeeh").style.display = "none";
+        document.getElementById("layoutHome").style.display = "flex";
+        renderList();
+    }
+
+    function renderList() {
+        const container = document.getElementById("containerDhikrList");
+        container.innerHTML = "";
+        dhikrList.forEach(item => {
+            const count = localStorage.getItem("counter_" + item.id) || "0";
+            const card = document.createElement("div");
+            card.className = "dhikr-card";
+            card.innerHTML = `
+                <div class="dhikr-card-text">${item.text}</div>
+                <div class="badge-counter">${count}</div>
+            `;
+            card.onclick = () => openTasbeeh(item);
+            container.appendChild(card);
+        });
+    }
+
+    function openTasbeeh(item) {
+        currentDhikr = item;
+        const count = localStorage.getItem("counter_" + item.id) || "0";
+        document.getElementById("tvActiveDhikr").innerText = item.text;
+        document.getElementById("tvCounter").innerText = count;
+
+        document.getElementById("layoutHome").style.display = "none";
+        document.getElementById("layoutTasbeeh").style.display = "flex";
+    }
+
+    // صوت النقر الداخلي
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playClick() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+
+        if (navigator.vibrate) navigator.vibrate(40);
+    }
+
+    function countTap() {
+        if (!currentDhikr) return;
+        let count = parseInt(localStorage.getItem("counter_" + currentDhikr.id) || "0") + 1;
+        localStorage.setItem("counter_" + currentDhikr.id, count);
+        document.getElementById("tvCounter").innerText = count;
+        playClick();
+    }
+
+    function resetCounter(e) {
+        e.stopPropagation();
+        if (!currentDhikr) return;
+        localStorage.setItem("counter_" + currentDhikr.id, "0");
+        document.getElementById("tvCounter").innerText = "0";
+    }
+
+    function goHome(e) {
+        e.stopPropagation();
+        showHome();
+    }
+</script>
+
+</body>
+</html>
