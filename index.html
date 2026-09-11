@@ -57,8 +57,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 24px;
             z-index: 60;
             cursor: pointer;
+            text-align: center;
         }
 
         .app-logo-img {
@@ -67,6 +69,16 @@
             border-radius: 40px;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
             object-fit: cover;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .logo-app-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--black);
+            margin-top: 24px;
+            line-height: 1.6;
+            max-width: 90%;
             animation: fadeIn 0.8s ease-in-out;
         }
 
@@ -259,6 +271,7 @@
     <!-- 1. شاشة الشعار (3 ثوانٍ) -->
     <div id="layoutAppLogo" onclick="skipLogoScreen()">
         <img src="logo.png" alt="شعار تطبيق التسبيح" class="app-logo-img">
+        <div class="logo-app-title">المسبحة الإلكترونية (صَدَقَةٌ جَارِيَةٌ لِجَمِيعِ المُسْلِمِينَ أَحْيَاءً وَأَمْوَاتًا)</div>
     </div>
 
     <!-- 2. شاشة الإهداء الافتتاحية (10 ثوانٍ) -->
